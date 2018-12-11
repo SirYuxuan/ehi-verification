@@ -19,9 +19,9 @@ public class ReflectUtil {
         boolean isMap = object instanceof Map;
         try {
             if (isMap) {
-                method = object.getClass().getMethod("get" + StrUtil.fristUp(fieldName));
-            } else {
                 method = object.getClass().getMethod("get", String.class);
+            } else {
+                method = object.getClass().getMethod("get" + StrUtil.fristUp(fieldName));
             }
 
         } catch (NoSuchMethodException e) {
