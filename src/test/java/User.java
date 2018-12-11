@@ -3,16 +3,18 @@ import com.yuxuan66.ehi.verification.annotation.Param;
 import com.yuxuan66.ehi.verification.annotation.Verification;
 import com.yuxuan66.ehi.verification.constant.ConstFormat;
 
+import java.util.HashMap;
+
 /**
  * @author Sir丶雨轩
  * @date 2018/12/11 13:30
  */
 @Verification(params = {
-        @Param(value = "name", require = false, len = @Len(min = 10, max = 20)),
+        @Param(value = "name", require = false, len = @Len(min = 10, max = 20),errorMsg = "用户名必须为10~20位字符"),
         @Param(value = "password"),
         @Param(value = "email", pattern = ConstFormat.EMAIL)
 })
-public class User {
+public class User extends HashMap {
 
     private String name;
     private String password;

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * @date 2018/12/11 13:19
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD})
 public @interface Verification {
 
     /**

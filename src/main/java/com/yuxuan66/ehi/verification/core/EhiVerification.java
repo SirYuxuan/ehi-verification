@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -27,7 +28,10 @@ public class EhiVerification {
      * 全局错误提示-校验失败提示
      */
     private String errorMsg = "{FIELD}填写错误";
-
+    /**
+     * 拦截器用 错误处理器
+     */
+    private VerificationHandler verificationHandler = new DefaultVerificationHandler();
 
     public VerificationResult verification(Object object) {
         VerificationResult verificationResult = new VerificationResult();
@@ -35,6 +39,9 @@ public class EhiVerification {
         List<Param> params = new ArrayList<>();
         Class<?> clazz = object.getClass();
         Verification verification = clazz.getAnnotation(Verification.class);
+        if (verification == null) {
+            return verificationResult;
+        }
         params.addAll(Arrays.asList(verification.params()));
         for (Field field : clazz.getDeclaredFields()) {
             Param param = field.getAnnotation(Param.class);
@@ -57,47 +64,52 @@ public class EhiVerification {
             if (param.require()) {
                 if (StrUtil.isBlank(value)) {
                     //校验失败
+                    verificationResult.setVerification(false);
                     verificationResult.addField(fieldName, geNullField(param));
                     continue;
                 }
             }
             //正则校验
-            if (!StrUtil.isBlank(param.pattern())) {
+            if (!StrUtil.isBlank(value) && !StrUtil.isBlank(param.pattern())) {
                 Pattern pattern = Pattern.compile(param.pattern());
                 if (!pattern.matcher(value).matches()) {
                     //校验失败
+                    verificationResult.setVerification(false);
                     verificationResult.addField(fieldName, getErrorField(param));
                     continue;
                 }
             }
             //AsFor 校验
-            if (!StrUtil.isBlank(param.asFor())) {
+            if (!StrUtil.isBlank(value) && !StrUtil.isBlank(param.asFor())) {
                 String asField = param.asFor();
                 Object asValObj = ReflectUtil.getVal(object, asField);
                 String asVal = asValObj == null ? "" : asValObj.toString();
                 if (!asVal.equals(value)) {
                     //校验失败
+                    verificationResult.setVerification(false);
                     verificationResult.addField(fieldName, getErrorField(param));
                     continue;
                 }
             }
             //nullFor 校验
-            if (!StrUtil.isBlank(param.nullFor())) {
+            if (!StrUtil.isBlank(value) && !StrUtil.isBlank(param.nullFor())) {
                 String nullField = param.nullFor();
                 Object nullValObj = ReflectUtil.getVal(object, nullField);
                 String nullVal = nullValObj == null ? "" : nullValObj.toString();
                 if (StrUtil.isBlank(nullVal) && StrUtil.isBlank(value)) {
                     //校验失败
+                    verificationResult.setVerification(false);
                     verificationResult.addField(fieldName, getErrorField(param));
                     continue;
                 }
             }
 
-            if (param.len().max() != -1 && param.len().min() != -1) {
+            if (!StrUtil.isBlank(value) && param.len().max() != -1 && param.len().min() != -1) {
                 int min = param.len().min();
                 int max = param.len().max();
                 if (value.length() > max || value.length() < min) {
                     //校验失败
+                    verificationResult.setVerification(false);
                     verificationResult.addField(fieldName, getErrorField(param));
                     continue;
                 }
@@ -124,6 +136,14 @@ public class EhiVerification {
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public VerificationHandler getVerificationHandler() {
+        return verificationHandler;
+    }
+
+    public void setVerificationHandler(VerificationHandler verificationHandler) {
+        this.verificationHandler = verificationHandler;
     }
 
     /**
