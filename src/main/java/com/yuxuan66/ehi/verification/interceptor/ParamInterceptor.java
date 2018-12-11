@@ -63,7 +63,7 @@ public class ParamInterceptor implements HandlerInterceptor {
         if (verificationResult.isVerification()) {
             return true;
         }
-        if (response.getHeader("x-requested-with") != null && response.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
+        if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
             PrintWriter out = response.getWriter();
             out.print(ehiVerification.getVerificationHandler().ajax(verificationResult));
             out.flush();
