@@ -34,11 +34,15 @@ public class EhiVerification {
     private VerificationHandler verificationHandler = new DefaultVerificationHandler();
 
     public VerificationResult verification(Object object) {
+        return verification(object, null);
+    }
+
+    public VerificationResult verification(Object object, Verification verificationP) {
         VerificationResult verificationResult = new VerificationResult();
         //所有要被校验的参数
         List<Param> params = new ArrayList<>();
         Class<?> clazz = object.getClass();
-        Verification verification = clazz.getAnnotation(Verification.class);
+        Verification verification = verificationP == null ? clazz.getAnnotation(Verification.class) : verificationP;
         if (verification == null) {
             return verificationResult;
         }
