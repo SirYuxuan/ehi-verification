@@ -29,9 +29,9 @@ public class ReflectUtil {
         }
         try {
             if (isMap) {
-                return method.invoke(object);
-            } else {
                 return method.invoke(object, fieldName);
+            } else {
+                return method.invoke(object);
             }
         } catch (ReflectiveOperationException e) {
             throw new VerificationException("invoke method get" + StrUtil.fristUp(fieldName) + " error." + e.getMessage());
