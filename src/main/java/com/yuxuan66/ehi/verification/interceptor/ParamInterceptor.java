@@ -58,7 +58,7 @@ public class ParamInterceptor implements HandlerInterceptor {
         }
         //遍历request所有参数,跟自定义注解参数校验做比较
         Map params = getParameterMap(request);
-        VerificationResult verificationResult = ehiVerification.verification(params);
+        VerificationResult verificationResult = ehiVerification.verification(params,verification);
         //如果校验通过 直接放行
         if (verificationResult.isVerification()) {
             return true;
