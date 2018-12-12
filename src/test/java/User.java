@@ -3,8 +3,6 @@ import com.yuxuan66.ehi.verification.annotation.Param;
 import com.yuxuan66.ehi.verification.annotation.Verification;
 import com.yuxuan66.ehi.verification.constant.ConstFormat;
 
-import java.util.HashMap;
-
 /**
  * @author Sir丶雨轩
  * @date 2018/12/11 13:30
@@ -14,7 +12,7 @@ import java.util.HashMap;
         @Param(value = "password"),
         @Param(value = "email", pattern = ConstFormat.EMAIL)
 })
-public class User extends HashMap {
+public class User {
 
     private String name;
     private String password;
