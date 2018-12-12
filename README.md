@@ -27,9 +27,13 @@ PS:正在往Maven中央仓库发布中
 #### 使用说明
 
 1. 首先我们先来认识几个常用的类和注解
+
 Verification,Param,Len
+
 EhiVerification,VerificationResult,Result,ConstFormat
+
 Param:标记一个参数要进行校验
+
 参数:
 
 value(String)=字段名称
