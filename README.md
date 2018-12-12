@@ -59,7 +59,7 @@ Verification:标记一个类,Bean只有此注解才会生效
 params(@Param)=字段列表
 
 
-```
+```java
 @Verification(params = {
         @Param(value = "name", require = false, len = @Len(min = 10, max = 20),errorMsg = "用户名必须为10~20位字符"),
         @Param(value = "password"),
@@ -110,7 +110,7 @@ public class User extends HashMap {
 
 demo
 
-```
+```java
    public static void main(String ...args){
         User user = new User();
         user.setName("1111111111");
@@ -130,6 +130,58 @@ verificationResult.isVerification();//返回是否有校验不通过字段
 verificationResult.getErrorMsg();//返回校验不通过的提示语,如上行代码返回true则此代码返回空字符串 
 ```
 下面我们来学习一下高级的使用方式，这里我们使用springboot进行集成
+1. 拦截器配置
+```java
+package com.km66.knowledge.support.config.web;
+
+import com.km66.knowledge.support.interceptor.AuthInterceptor;
+import com.km66.knowledge.support.resolver.DictArgumentResolver;
+import com.yuxuan66.ehi.verification.core.EhiVerification;
+import com.yuxuan66.ehi.verification.interceptor.ParamInterceptor;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
+
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+        //创建核心校验器
+        EhiVerification ehiVerification = new EhiVerification();
+        //添加参数拦截器
+		registry.addInterceptor(new ParamInterceptor(ehiVerification));
+	}
+}
+```
+2. Controller配置
+```java
+@RequestMapping(path = "updateAccessTokenByRefreshToken", method = RequestMethod.POST)
+    @ResponseBody
+    @Verification(params = {
+            @Param(value = "username", len = @Len(min = 10, max = 20),errorMsg = "用户名格式不正确",nullMsg = "用户名必须输入"),
+            @Param(value = "email" ,pattern = ConstFormat.EMAIL),
+            @Param(value = "password")
+    })
+    public RespEntity updateAccessTokenByRefreshToken(@RequestParam Map<String, Object> params) {
+        try {
+            return usersService.updateAccessTokenByRefreshToken(params);
+        } catch (Exception e) {
+            logger.error("服务器异常", e);
+            return RespEntity.fail();
+        }
+    }
+```
+交流群:795272647
+
 #### 参与贡献
 
 1. Fork 本项目
