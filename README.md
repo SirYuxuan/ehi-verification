@@ -31,14 +31,23 @@ Verification,Param,Len
 EhiVerification,VerificationResult,Result,ConstFormat
 Param:标记一个参数要进行校验
 参数:
+
 value(String)=字段名称
+
 require(boolean)=是否需要(默认为需要)
+
 asFor(String)=必须跟asFor的字段内容一致
+
 nullFor(String)=nullFor的字段内容和当前内容不能同时为空
+
 nullMsg(String)=字段为空的错误提示,默认使用全局提示
+
 errorMsg(String)=字段校验不通过的错误提示,默认使用全局提示
+
 pattern(String)=用来校验的正则
+
 len(@Len)=长度校验
+
 
 
 Verification:标记一个类,Bean只有此注解才会生效
