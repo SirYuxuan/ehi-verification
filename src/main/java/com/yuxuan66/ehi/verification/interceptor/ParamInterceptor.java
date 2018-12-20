@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -64,9 +64,10 @@ public class ParamInterceptor implements HandlerInterceptor {
             return true;
         }
         if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
-            PrintWriter out = response.getWriter();
+            OutputStream out  = response.getOutputStream();
             response.setCharacterEncoding("utf-8");
-            out.print(ehiVerification.getVerificationHandler().ajax(verificationResult));
+            response.setContentType("application/json; charset=utf-8");
+            out.write(ehiVerification.getVerificationHandler().ajax(verificationResult).getBytes("utf-8"));
             out.flush();
             return false;
         } else {
