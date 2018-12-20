@@ -9,17 +9,16 @@
 
 
 #### 安装教程
-PS:正在往Maven中央仓库发布中
-暂时使用拉取项目打包的本地的方式使用
+PS:最新版本正在同步发至maven中央库
 1. 拉取项目
 2. 在项目根目录执行 mvn clean install
 3. 如没问题就可以在项目中直接使用了
 
-```
+```java
  <dependency>
      <groupId>com.yuxuan66</groupId>
      <artifactId>ehi-verification</artifactId>
-     <version>1.0-SNAPSHOT</version>
+     <version>1.0.3</version>
  </dependency>
 ```
 如非Maven项目直接打包后找到Jar放入项目中即可
