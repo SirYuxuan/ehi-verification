@@ -6,7 +6,7 @@
 
     <groupId>com.yuxuan66</groupId>
     <artifactId>ehi-verification</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>ehi-verification</name>
     <url>http://www.yuxuan66.com</url>
     <description>ehi-verification</description>
@@ -19,8 +19,8 @@
         </license>
     </licenses>
     <scm>
-        <url>https://gitee.com/yuxuankkkkk</url>
-        <connection>https://gitee.com/yuxuankkkkk/ehi-verification.git</connection>
+        <url>https://gitee.com/siryuxuan</url>
+        <connection>https://gitee.com/siryuxuan/ehi-verification.git</connection>
     </scm>
     <developers>
         <developer>
@@ -55,11 +55,8 @@
     <profiles>
         <profile>
             <id>oss</id>
-            <!--  部署要用到  -->
             <build>
                 <plugins>
-
-                    <!-- maven-javadoc-plugin 生成javadoc包 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -108,7 +105,7 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>gpg2</executable>
+                                    <executable>gpg</executable>
                                 </configuration>
                             </execution>
                         </executions>
