@@ -7,13 +7,11 @@
 #### 软件架构
 没啥架构,不强制依赖第三方Jar包
 
+#### 更新记录
+1.0.3 解决返回JSON多出逗号的问题
 
 #### 安装教程
-PS:最新版本正在同步发至maven中央库
-1. 拉取项目
-2. 在项目根目录执行 mvn clean install
-3. 如没问题就可以在项目中直接使用了
-
+PS:最新版已同步至Maven中央仓库
 ```java
  <dependency>
      <groupId>com.yuxuan66</groupId>
