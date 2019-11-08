@@ -9,6 +9,10 @@
 
 #### 更新记录
 1.0.3 解决返回JSON多出逗号的问题
+1.0.4 
+1.直接以@RequestBody 形式获取参数的校验
+2.新增BodyReaderFilter可协助解决流只能读取一次的问题
+
 
 #### 安装教程
 PS:最新版已同步至Maven中央仓库
@@ -16,7 +20,7 @@ PS:最新版已同步至Maven中央仓库
  <dependency>
      <groupId>com.yuxuan66</groupId>
      <artifactId>ehi-verification</artifactId>
-     <version>1.0.3</version>
+     <version>1.0.4</version>
  </dependency>
 ```
 如非Maven项目直接打包后找到Jar放入项目中即可
