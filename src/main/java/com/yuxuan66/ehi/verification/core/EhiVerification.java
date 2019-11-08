@@ -165,7 +165,7 @@ public class EhiVerification {
     }
 
     /**
-     * 内部使用 构建Resule实例
+     * 内部使用 构建Result实例
      *
      * @param param
      * @return

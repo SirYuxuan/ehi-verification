@@ -1,5 +1,6 @@
 package com.yuxuan66.ehi.verification.interceptor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yuxuan66.ehi.verification.annotation.Verification;
 import com.yuxuan66.ehi.verification.core.EhiVerification;
 import com.yuxuan66.ehi.verification.core.VerificationResult;
@@ -8,6 +9,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,8 +60,15 @@ public class ParamInterceptor implements HandlerInterceptor {
             return true;
         }
         //遍历request所有参数,跟自定义注解参数校验做比较
-        Map params = getParameterMap(request);
-        VerificationResult verificationResult = ehiVerification.verification(params,verification);
+        VerificationResult verificationResult;
+
+        Map bodyParams = getParamsFromRequestBody(request);
+        if(bodyParams.size() > 0){
+            verificationResult = ehiVerification.verification(bodyParams,verification);
+        }else{
+            Map params = getParameterMap(request);
+            verificationResult = ehiVerification.verification(params,verification);
+        }
         //如果校验通过 直接放行
         if (verificationResult.isVerification()) {
             return true;
@@ -75,7 +85,28 @@ public class ParamInterceptor implements HandlerInterceptor {
             return false;
         }
     }
+    private Map<String, Object> getParamsFromRequestBody(HttpServletRequest request) throws IOException {
+        BufferedReader reader = request.getReader();
 
+        StringBuilder builder = new StringBuilder();
+        try {
+            String line = null;
+            while((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+            String bodyString = builder.toString();
+            return JSONObject.parseObject(bodyString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return new HashMap<>();
+    }
     /**
      * 获取request内请求参数转换为Map对象
      *
