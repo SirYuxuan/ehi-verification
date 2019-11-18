@@ -22,7 +22,7 @@ PS:最新版已同步至Maven中央仓库
  <dependency>
      <groupId>com.yuxuan66</groupId>
      <artifactId>ehi-verification</artifactId>
-     <version>1.0.4</version>
+     <version>1.0.5</version>
  </dependency>
 ```
 如非Maven项目直接打包后找到Jar放入项目中即可
