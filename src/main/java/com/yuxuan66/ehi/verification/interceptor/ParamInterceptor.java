@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
+
 /**
  * 参数校验拦截器
  *
@@ -63,7 +65,7 @@ public class ParamInterceptor implements HandlerInterceptor {
         VerificationResult verificationResult;
 
         Map bodyParams = getParamsFromRequestBody(request);
-        if(bodyParams.size() > 0){
+        if(!Objects.isNull(bodyParams) && !bodyParams.isEmpty()){
             verificationResult = ehiVerification.verification(bodyParams,verification);
         }else{
             Map params = getParameterMap(request);
