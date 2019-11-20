@@ -1,5 +1,6 @@
 import com.yuxuan66.ehi.verification.core.EhiVerification;
 import com.yuxuan66.ehi.verification.core.VerificationResult;
+import org.junit.Assert;
 
 /**
  * @author Sir丶雨轩
@@ -15,6 +16,7 @@ public class Test {
         VerificationResult verificationResult = new EhiVerification().verification(user);
         System.out.println(verificationResult.isVerification());
         System.out.println(verificationResult.getErrorMsg());
+        Assert.assertTrue(verificationResult.isVerification());
 
     }
 }
