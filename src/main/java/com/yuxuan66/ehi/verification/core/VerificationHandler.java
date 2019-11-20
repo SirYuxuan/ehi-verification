@@ -1,8 +1,6 @@
 package com.yuxuan66.ehi.verification.core;
 
 
-import org.springframework.ui.Model;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -20,9 +18,7 @@ public interface VerificationHandler {
      * @return 输出的JSON
      */
 
-    default String ajax(VerificationResult verificationResult) {
-        return "{\"code\": \"error\",\"msg\": \"" + verificationResult.getErrorMsg() + "\",}";
-    }
+    String ajax(VerificationResult verificationResult);
 
     /**
      * 页面请求处理 转发到指定地址
@@ -31,8 +27,5 @@ public interface VerificationHandler {
      * @param request            request操作对象
      * @return 访问的请求地址
      */
-    default String page(VerificationResult verificationResult, HttpServletRequest request) {
-        request.setAttribute("errorMsg", verificationResult.getErrorMsg());
-        return "error";
-    }
+    String page(VerificationResult verificationResult, HttpServletRequest request);
 }
