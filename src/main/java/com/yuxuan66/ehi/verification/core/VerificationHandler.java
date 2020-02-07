@@ -18,7 +18,11 @@ public interface VerificationHandler {
      * @return 输出的JSON
      */
 
-    String ajax(VerificationResult verificationResult);
+    default String ajax(VerificationResult verificationResult) {
+        return verificationResult.getErrorMsg();
+    }
+
+    ;
 
     /**
      * 页面请求处理 转发到指定地址
@@ -27,5 +31,8 @@ public interface VerificationHandler {
      * @param request            request操作对象
      * @return 访问的请求地址
      */
-    String page(VerificationResult verificationResult, HttpServletRequest request);
+    default String page(VerificationResult verificationResult, HttpServletRequest request) {
+        return "/error";
+    }
+
 }

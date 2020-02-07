@@ -29,6 +29,7 @@ public class ParamInterceptor implements HandlerInterceptor {
      * 核心校验器操作对象
      */
     private EhiVerification ehiVerification;
+
     public ParamInterceptor() {
     }
 
@@ -63,37 +64,36 @@ public class ParamInterceptor implements HandlerInterceptor {
         }
         //遍历request所有参数,跟自定义注解参数校验做比较
         VerificationResult verificationResult;
-
-        Map bodyParams = getParamsFromRequestBody(request);
-        if(!Objects.isNull(bodyParams) && !bodyParams.isEmpty()){
-            verificationResult = ehiVerification.verification(bodyParams,verification);
-        }else{
-            Map params = getParameterMap(request);
-            verificationResult = ehiVerification.verification(params,verification);
+        Map params;
+        if (request.getContentType().contains("application/json")) {
+            params = getParamsFromRequestBody(request);
+        } else {
+            params = getParameterMap(request);
         }
+        verificationResult = ehiVerification.verification(params, verification);
         //如果校验通过 直接放行
         if (verificationResult.isVerification()) {
             return true;
         }
         if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
-            OutputStream out  = response.getOutputStream();
+            OutputStream out = response.getOutputStream();
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json; charset=utf-8");
             out.write(ehiVerification.getVerificationHandler().ajax(verificationResult).getBytes("utf-8"));
             out.flush();
-            return false;
         } else {
             request.getRequestDispatcher(ehiVerification.getVerificationHandler().page(verificationResult, request)).forward(request, response);
-            return false;
         }
+        return false;
     }
+
     private Map<String, Object> getParamsFromRequestBody(HttpServletRequest request) throws IOException {
         BufferedReader reader = request.getReader();
 
         StringBuilder builder = new StringBuilder();
         try {
             String line = null;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
             String bodyString = builder.toString();
@@ -109,6 +109,7 @@ public class ParamInterceptor implements HandlerInterceptor {
         }
         return new HashMap<>();
     }
+
     /**
      * 获取request内请求参数转换为Map对象
      *
