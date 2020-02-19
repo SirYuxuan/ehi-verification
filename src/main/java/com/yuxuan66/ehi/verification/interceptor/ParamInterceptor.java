@@ -65,7 +65,7 @@ public class ParamInterceptor implements HandlerInterceptor {
         //遍历request所有参数,跟自定义注解参数校验做比较
         VerificationResult verificationResult;
         Map params;
-        if (request.getContentType().contains("application/json")) {
+        if (request.getContentType() == null || request.getContentType().contains("application/json")) {
             params = getParamsFromRequestBody(request);
         } else {
             params = getParameterMap(request);
